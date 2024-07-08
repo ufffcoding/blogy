@@ -38,23 +38,23 @@ function BlogForm({ blog }) {
     const submit = async (data) => {
         if (blog) {
             let file;
-            if (data.image[0]) {
-                const uploadedFile = await database.uploadFile(data.image[0])
+            if (data?.image[0]) {
+                const uploadedFile = await database.uploadFile(data?.image[0])
                 if (uploadedFile) {
-                    await database.deleteFile(blog.image);
-                    file = uploadedFile.$id
+                    await database.deleteFile(blog?.image);
+                    file = uploadedFile?.$id
                 }
             } else {
-                file = blog.image
+                file = blog?.image
             }
-            const updateFile = await database.updatePost(blog.$id, {
+            const updateFile = await database.updatePost(blog?.$id, {
                 ...data,
                 image: file
             });
             if (updateFile) {
-                dispatch(updatePost({ $id: blog?.$id, post: { ...updateFile, imageUrl: database.getFilepreview(updateFile.image) } }))
+                dispatch(updatePost({ $id: blog?.$id, post: { ...updateFile, imageUrl: database.getFilepreview(updateFile?.image) } }))
             }
-            navigate(`/blog/${blog.$id}`);
+            navigate(`/blog/${blog?.$id}`);
 
         } else {
             if (!data) {
@@ -63,20 +63,20 @@ function BlogForm({ blog }) {
                     message: "All fields are required"
                 });
             }
-            const uploadFile = await database.uploadFile(data.image[0])
+            const uploadFile = await database.uploadFile(data?.image[0])
 
             if (uploadFile) {
-                data.image = uploadFile.$id;
+                data.image = uploadFile?.$id;
                 const createPost = await database.createPost({
                     ...data,
-                    userId: userData.$id,
+                    userId: userData?.$id,
                 });
                 if (!createPost) {
-                    await database.deleteFile(uploadFile.$id)
+                    await database.deleteFile(uploadFile?.$id)
                 } else {
                     dispatch(addPost({ ...createPost, imageUrl: database.getFilepreview(createPost?.image) }))
                 }
-                navigate(`/blog/${createPost.$id}`);
+                navigate(`/blog/${createPost?.$id}`);
             }
         }
     };

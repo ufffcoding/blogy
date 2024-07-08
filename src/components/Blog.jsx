@@ -23,9 +23,9 @@ export default function Blog() {
 
     // fetch blog function
     const fetchBlogData = useCallback(async () => {
-        const fetchBlog = await database.getPost(id).then(post => post.documents[0])
+        const fetchBlog = await database.getPost(id).then(post => post?.documents[0])
         if (fetchBlog) {
-            const fetchImage = database.getFilepreview(fetchBlog.image)
+            const fetchImage = database.getFilepreview(fetchBlog?.image)
             console.log(fetchImage);
             if (fetchImage) {
                 setBlog({ ...fetchBlog, imageUrl: fetchImage });
@@ -34,10 +34,10 @@ export default function Blog() {
     }, [blog]);
 
     useEffect(() => {
-        if (storeBlog.length === 0) {
+        if (storeBlog?.length === 0) {
             fetchBlogData();
         } else {
-            const filteredblog = storeBlog?.find((blog) => blog.$id === id);
+            const filteredblog = storeBlog?.find((blog) => blog?.$id === id);
             setBlog(filteredblog);
         }
     }, [storeBlog.length]);

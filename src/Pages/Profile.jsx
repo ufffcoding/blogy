@@ -8,7 +8,6 @@ export default function Profile() {
   const authStatus = useSelector((state) => state.auth.status);
   const userData = useSelector((state) => state.auth.userData);
   const posts = useSelector((state) => state.posts.posts);
-  const images = useSelector((state) => state.posts.images);
 
   return (
     <div className="p-4 md:p-8 bg-gray-100 relative dark:bg-gray-900 min-h-screen">
@@ -26,10 +25,9 @@ export default function Profile() {
       <div>
         {authStatus ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {posts?.filter(post => post.userId === userData.$id).map((blog) => {
-              const image = images?.find((img) => img.$id === blog.image);
+            {posts?.filter(post => post?.userId === userData?.$id).map((blog) => {
               return (
-                <BlogCard key={blog.$id} blog={blog} imageUrl={image ? image.url : ''} />
+                <BlogCard key={blog?.$id} blog={blog} />
               );
             })}
           </div>
